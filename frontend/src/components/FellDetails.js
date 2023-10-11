@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { useFellsContext } from "../hooks/useFellsContext";
 
 const FellDetails = ({ fell }) => {
+    const {dispatch} = useFellsContext()
     const [climbed, setClimbed] = useState('');
 
     const handleClick = async (e) => {
@@ -22,6 +24,15 @@ const FellDetails = ({ fell }) => {
         }
 
         if(response.ok) {
+            // Grab full list again
+            const fellResponse = await fetch('/api/fells')
+
+            const fellJson = await fellResponse.json()
+            // update state
+            if(response.ok) {
+                dispatch({type: 'SET_FELLS', payload: fellJson})
+            }
+
             console.log('climbed!', json)
         }
     }

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import FellDetails from '../components/FellDetails'
+import { useFellsContext } from "../hooks/useFellsContext";
 
 
 const Home = () => {
-    const [fells, setFells] = useState(null);
+    const {fells, dispatch} = useFellsContext()
 
     useEffect(() => {
         const fetchFells = async () => {
@@ -12,12 +13,12 @@ const Home = () => {
             const json = await response.json()
 
             if(response.ok) {
-                setFells(json)
+                dispatch({type: 'SET_FELLS', payload: json})
             }
         }
 
         fetchFells()
-    }, [])
+    }, [dispatch])
     return (
         <div className="home">
             <div className="fells">
