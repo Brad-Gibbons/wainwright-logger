@@ -1,12 +1,20 @@
 const Fell = require('../models/fellModel')
+const User = require('../models/userModel')
 const mongoose = require('mongoose')
 
 // get all fells
 const getFells = async (req, res) => {
-    const fells = await Fell.find({}).sort({height: -1})
+    // 
+    const user_id = req.user._id.toHexString()
+    // new ObjectId("65271540bc9a3913707cf6b1")
 
+    console.log(user_id)
+    const fells = await User.findById(user_id)
+    console.log(fells)
     res.status(200).json(fells)
 }
+
+
 // get a single fell
 const getFell = async (req, res) => {
     const {id} = req.params
@@ -52,7 +60,7 @@ const deleteFell = async (req, res) => {
 
 }
 
-// update a workout 
+// update a fell 
 const updateFell = async (req, res) => {
     const {id} = req.params
     if(!mongoose.Types.ObjectId.isValid(id)) {

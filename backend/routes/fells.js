@@ -1,8 +1,13 @@
 const express = require('express')
 const Fell = require('../models/fellModel')
 const {createFell, getFell, getFells, deleteFell, updateFell} = require('../controllers/fellController')
+const requireAuth = require('../middleware/requiredAuth')
 
 const router = express.Router()
+
+// Fire middleware before any other routes 
+router.use(requireAuth)
+
 // get all
 router.get('/' , getFells)
 

@@ -1,22 +1,36 @@
 import { useState } from "react"
 import { useFellsContext } from "../hooks/useFellsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 
 const FellDetails = ({ fell }) => {
     const {dispatch} = useFellsContext()
     const [climbed, setClimbed] = useState('');
+    const {user}= useAuthContext();
+    console.log(fell)
 
     const handleClick = async (e) => {
         e.preventDefault()
+        if(!user) {
+            console.log('You must be logged in')
+            return
+        }
 
         const summit = {climbed} 
         console.log(summit)
+
+       
+
+
         const response = await fetch(`/api/fells/${fell._id}` , {
             method: 'PATCH',
             body: JSON.stringify(summit),
             headers: {
-                'Content-Type' : 'application/json'
+                'Content-Type' : 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
+
         const json = await response.json()
 
         if(!response.ok) {
@@ -25,7 +39,11 @@ const FellDetails = ({ fell }) => {
 
         if(response.ok) {
             // Grab full list again
-            const fellResponse = await fetch('/api/fells')
+            const fellResponse = await fetch('/api/fells', {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
 
             const fellJson = await fellResponse.json()
             // update state
@@ -37,12 +55,12 @@ const FellDetails = ({ fell }) => {
         }
     }
 
-    console.log(fell.climbed)
+    // console.log(fell.climbed)
     return (
         <div className="fell-details">
-            <h4>{fell.title}</h4>
+            <h4>{fell.fellName}</h4>
             <p><strong>{fell.area}</strong></p>
-            <p><strong>Height:</strong> {fell.height}</p>
+            <p><strong>Height:</strong> {fell.heightMetre}</p>
             <p><strong>Climbed? </strong>{fell.climbed ? <p>Yes</p> : <p>No</p>} </p>
             <label>
             Summited recently?
