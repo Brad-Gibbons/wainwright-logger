@@ -33,7 +33,7 @@ const Home = () => {
         <div className="home">
             <div className="fells">
                 {fells && fetchFells.map((fell) => (
-                    <FellDetails key={fell._id} fell={fell}/>
+                    <FellDetails key={fell.id} fell={fell}/>
                 ))}
             </div>
         </div>

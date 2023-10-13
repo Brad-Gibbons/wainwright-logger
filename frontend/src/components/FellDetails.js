@@ -7,7 +7,7 @@ const FellDetails = ({ fell }) => {
     const {dispatch} = useFellsContext()
     const [climbed, setClimbed] = useState('');
     const {user}= useAuthContext();
-    console.log(fell)
+    // console.log(user.email)
 
     const handleClick = async (e) => {
         e.preventDefault()
@@ -16,13 +16,13 @@ const FellDetails = ({ fell }) => {
             return
         }
 
-        const summit = {climbed} 
-        console.log(summit)
+        const summit = {climbed, user} 
+        console.log(summit, 'test', fell.id)
 
        
 
 
-        const response = await fetch(`/api/fells/${fell._id}` , {
+        const response = await fetch(`/api/fells/${fell.id}` , {
             method: 'PATCH',
             body: JSON.stringify(summit),
             headers: {
@@ -67,7 +67,7 @@ const FellDetails = ({ fell }) => {
              <input 
              type="radio" 
              value="true"
-             name={fell._id}
+             name={fell.id}
              onChange={(e) => setClimbed(e.target.value)}
 
              />
@@ -77,7 +77,7 @@ const FellDetails = ({ fell }) => {
              <input 
              type="radio" 
              value="false"
-             name={fell._id}
+             name={fell.id}
              onChange={(e) => setClimbed(e.target.value)}
              />
                 No
